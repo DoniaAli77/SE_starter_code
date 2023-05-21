@@ -29,6 +29,7 @@ const getUser = async function (req) {
   user.isNormal = user.roleid === roles.user;
   user.isAdmin = user.roleid === roles.admin;
   user.isSenior = user.roleid === roles.senior;
+  console.log("user =>", user)
   return user;
 };
 
