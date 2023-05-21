@@ -27,6 +27,7 @@ async function uploadSR() {
     const element =SR[i];
     await db("se_project.stationroutes").insert(element).returning("*");
   }
+
 }
 async function uploadS() {
   let stations = [
