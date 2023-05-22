@@ -4,14 +4,16 @@ const knex = require('knex');
 
 // define the configuration settings to connect
 // to our local postgres server
+
+
 const config = {
   client: 'pg',
   connection: {
     host: 'localhost',
     port: 5432,
     user: 'postgres',
-    password: '1234',
-    database: 'postgres',
+    password: 'Magnet123@',
+    database: 'Cairo_Met_Db',
   }
 };
 
