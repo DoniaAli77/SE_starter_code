@@ -11,12 +11,12 @@ app.post("/api/v1/user", async function (req, res) {
       .from("se_project.users")
       .where("email", req.body.email);
     if (!isEmpty(userExists)) {
-      return res.status(400).send("user exists");
+      return res.status(400).json("user exists");
     }
 
     const newUser = {
-      firstname: req.body.firstName,
-      lastname: req.body.lastName,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       email: req.body.email,
       password: req.body.password,
       roleid: roles.user,

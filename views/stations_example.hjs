@@ -32,7 +32,6 @@
           <tr>
             <th scope="col">id</th>
             <th scope="col">Name</th>
-            <th scope="col">code</th>
             <th scope="col">Type</th>
             <th scope="col">Position</th>
             <th scope="col">status</th>
@@ -43,10 +42,10 @@
           {{#stations}}
             <tr>
               <td>{{id}}</td>
-              <td>{{stationName}}</td>
-              <td>{{stationType}}</td>
-              <td>{{stationPosition}}</td>
-              <td>{{stationStatus}}</td>
+              <td>{{stationname}}</td>
+              <td>{{stationtype}}</td>
+              <td>{{stationposition}}</td>
+              <td>{{stationstatus}}</td>
             </tr> 
           {{/stations}}
         </thead>

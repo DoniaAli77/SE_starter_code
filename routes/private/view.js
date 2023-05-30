@@ -29,15 +29,24 @@ module.exports = function(app) {
     const user = await getUser(req);
     return res.render('dashboard', user);
   });
+  app.get('/dashboardx', async function(req, res) {
+    const user = await getUser(req);
+    return res.render('dashboard', user);
+  });
 
+  app.get('/users/add', async function(req, res) {
+    return res.render('add-user');
+  });
   // Register HTTP endpoint to render /users page
   app.get('/users', async function(req, res) {
     const users = await db.select('*').from('se_project.users');
-    return res.render('users', { users });
+    const user = await getUser(req);
+
+    return res.render('users', { users ,...user});
   });
 
   // Register HTTP endpoint to render /courses page
-  app.get('/stations', async function(req, res) {
+  app.get('/stations_example', async function(req, res) {
     const user = await getUser(req);
     const stations = await db.select('*').from('se_project.stations');
     return res.render('stations_example', { ...user, stations });
