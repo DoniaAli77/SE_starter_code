@@ -39,6 +39,8 @@
 
 
           </tr>
+               </thead>
+          <tbody>
           {{#stations}}
             <tr>
               <td>{{id}}</td>
@@ -48,7 +50,8 @@
               <td>{{stationstatus}}</td>
             </tr> 
           {{/stations}}
-        </thead>
+          </tbody>
+   
       </table>
     </div>
   </body>
