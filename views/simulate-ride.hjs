@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>simulate-ride</title>
+  <link rel='stylesheet' href='/styles/bootstrap.min.css' />
+  <link rel='stylesheet' href='/styles/style.css' />
+  <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+  <script>
+    $(document).ready(function() {
+      // Function to fetch rides and update the table
+      function fetchRides() {
+        $.ajax({
+          url: "/api/v1/userRides",
+          type: "GET",
+          success: function(response) {
+            // Clear the table body
+            $("tbody").empty();
+
+            // Populate the table with ride data
+            response.forEach(function(ride) {
+              var row = $("<tr></tr>");
+              row.append("<td>" + ride.id + "</td>");
+              row.append("<td>" + ride.status + "</td>");
+              row.append("<td>" + ride.origin + "</td>");
+              row.append("<td>" + ride.destination + "</td>");
+              row.append("<td>" + ride.userid + "</td>");
+              row.append("<td>" + ride.ticketid + "</td>");
+              row.append("<td>" + ride.tripdate + "</td>");
+
+              $("tbody").append(row);
+            });
+          },
+          error: function(xhr, status, error) {
+            console.log("Failed to fetch rides:", xhr.responseText);
+          }
+        });
+      }
+
+      // Call the fetchRides function to initially populate the table
+      fetchRides();
+
+      // Submit form handler
+      $("form").submit(function(event) {
+        event.preventDefault();
+
+        // Get the form data
+        var origin = $("#origin").val();
+        var destination = $("#destination").val();
+        var tripdate = $("#tripdate").val();
+
+        // Send the AJAX request
+        $.ajax({
+          url: "/api/v1/ride/simulate",
+          type: "PUT",
+          data: { origin: origin, destination: destination, tripdate: tripdate },
+          success: function(response) {
+            // Handle success response
+            console.log(response); // Display the success message
+
+            // Fetch and update the table with the latest ride data
+            fetchRides();
+          },
+          error: function(xhr, status, error) {
+            // Handle error response
+            console.log(xhr.responseText); // Display the error message
+            // Add any additional error handling logic
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<div>
+  <div>
+    <nav class="navbar navbar-inverse" style="padding-left:130px;">
+      <ul class="nav navbar-nav">
+        <li><a href="/rides">Home</a></li>
+        <li class="active"><a href="/simulate-ride">Rides</a></li>
+        <li><a href="/">Logout</a></li>
+      </ul>
+    </nav>
+  </div>
+  <h3>Simulate a Ride</h3>
+  <div>
+    <form>
+      <label for="origin">Origin:</label>
+      <input type="text" id="origin" name="origin" required><br><br>
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" name="destination" required><br><br>
+      <label for="tripdate">Trip Date:</label>
+      <input type="text" id="tripdate" name="tripdate" required><br><br>
+      <button type="submit">Simulate</button>
+    </form>
+    <br>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">status</th>
+        <th scope="col">origin</th>
+        <th scope="col">destination</th>
+        <th scope="col">userid</th>
+        <th scope="col">ticketid</th>
+        <th scope="col">tripdate</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

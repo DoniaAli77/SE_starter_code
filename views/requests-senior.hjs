@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Senior Request</title>
+  <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+  <link rel="stylesheet" href="/styles/style.css" />
+  <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+  <div>
+    <h1>Senior Request</h1>
+    <form id="requestForm" action="/api/v1/senior/request" method="post">
+      <div class="form-group">
+        <label for="nationalId">National ID:</label>
+        <input type="text" class="form-control" id="nationalId" name="nationalId" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Request</button>
+    </form>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $('#requestForm').submit(function(e) {
+        e.preventDefault();
+        const nationalId = $('#nationalId').val();
+        $.ajax({
+          url: '/api/v1/senior/request',
+          type: 'POST',
+          data: { nationalId: nationalId },
+          success: function(response) {
+            alert(response.message);
+          },
+          error: function(xhr, status, error) {
+            const errorMessage = JSON.parse(xhr.responseText).error;
+            alert(errorMessage);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

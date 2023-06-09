@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Subscriptions</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <nav class="navbar navbar-inverse" style="padding-left:130px;">
+          <ul class="nav navbar-nav">
+            <li><a href="/dashboard">Home</a></li>
+            <li class="active"><a href="/subcriptions">Subscriptions</a></li>
+            <li><a href="/">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+      <br />
+      <table class="table" id="subscription-table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">subtype</th>
+            <th scope="col">zoneid</th>
+            <th scope="col">userid</th>
+            <th scope="col">no of tickets</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: "/api/v1/subscriptons",
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            var tableBody = $("#subscription-table tbody");
+            data.forEach(function (subscription) {
+              var row =
+                "<tr>" +
+                "<td>" +
+                subscription.id +
+                "</td>" +
+                "<td>" +
+                subscription.subtype +
+                "</td>" +
+                "<td>" +
+                subscription.zoneid +
+                "</td>" +
+                "<td>" +
+                subscription.userid +
+                "</td>" +
+                "<td>" +
+                subscription.nooftickets +
+                "</td>" +
+                "</tr>";
+              tableBody.append(row);
+            });
+          },
+          error: function (xhr, status, error) {
+            console.error(error);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Refund Requests</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <style>
+      /* Custom CSS for table design */
+      .table-container {
+        width: 80%;
+        margin: 30px auto;
+      }
+
+      .table-container table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table-container th,
+      .table-container td {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .table-container thead {
+        background-color: #f8f9fa;
+      }
+
+      .table-container tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .table-container tbody tr:hover {
+        background-color: #e9ecef;
+      }
+
+      .table-container th {
+        background-color: #343a40;
+        color: #fff;
+      }
+    </style>
+    <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script>
+      function handleRefundRequest(requestId, refundStatus) {
+        const data = {
+          refundStatus: refundStatus
+        };
+
+        $.ajax({
+          url: `/api/v1/requests/refunds/${requestId}`,
+          type: "PUT",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          success: function(response) {
+            // Handle success response
+            console.log(response);
+            alert("Refund request processed successfully.");
+            // Optionally, you can update the UI or show a success message here
+          },
+          error: function(error) {
+            // Handle error response
+            console.log(error);
+            alert("Error processing refund request. The ticket is outdated");
+            // Optionally, you can update the UI or show an error message here
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <nav class="navbar navbar-inverse" style="padding-left:130px;">
+          <ul class="nav navbar-nav">
+            <li><a href="/dashboard">Home</a></li>
+            <li class="active"><a href="/refund_requests">Refund Requests</a></li>
+          </ul>
+        </nav>
+      </div>
+      <br />
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>User ID</th>
+              <th>Refund Amount</th>
+              <th>Ticket ID</th>
+              {{#isAdmin}}
+              <th>Actions</th>
+              {{/isAdmin}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#refundrequests}}
+            <tr>
+              <td>{{id}}</td>
+              <td>{{status}}</td>
+              <td>{{userid}}</td>
+              <td>{{refundamount}}</td>
+              <td>{{ticketid}}</td>
+              {{#isAdmin}}
+              <td>
+                <button class="btn btn-success" onclick="handleRefundRequest('{{id}}', 'accepted')">Accept</button>
+                <button class="btn btn-danger" onclick="handleRefundRequest('{{id}}', 'rejected')">Reject</button>
+              </td>
+              {{/isAdmin}}
+            </tr>
+            {{/refundrequests}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

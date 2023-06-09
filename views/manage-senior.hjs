@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Senior</title>
+  <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+  <link rel="stylesheet" href="/styles/style.css" />
+  <style>
+    .table-container{
+      width:80%;
+      margin: 30px auto;
+    }
+    .table-container table{
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table-container th,
+    .table-container td{
+      padding: 10px;
+      text-align: center;
+    }
+    .table-container thead{
+      background-color: #f8f9fa;
+    }
+    .table-container tbody tr:nth-child(even){
+      background-color: #f8f9fa;
+    }
+    .table-container tbody tr:hover{
+      background-color: #e9ecef;
+    }
+    .table-container th{
+      background-color: #343a40;
+      color: #fff;
+    }
+  </style>
+  <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+  <script>
+    function handleSeniorRequest(requestId, seniorStatus){
+      const data = {
+        seniorStatus: seniorStatus
+      };
+    }
+    function acceptRequest(requestId) {
+      $.ajax({
+        url: '/api/v1/requests/senior/' + requestId,
+        type: 'PUT',
+        data: JSON.stringify({ seniorStatus: 'accepted' }),
+        contentType: 'application/json',
+        success: function(response) {
+          console.log(response.message);
+          location.reload();
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+     function rejectRequest(requestId) {
+      $.ajax({
+        url: '/api/v1/requests/senior/' + requestId,
+        type: 'PUT',
+        data: JSON.stringify({ seniorStatus: 'rejected' }),
+        contentType: 'application/json',
+        success: function(response) {
+          console.log(response.message);
+          $("#" + requestId).remove(); // Remove the row from the table
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+  </script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <nav class="navbar navbar-inverse" style="padding-left:130px;">
+          <ul class="nav navbar-nav">
+            <li><a href="/dashboard">Home</a></li>
+            <li class="active"><a href="/manage_senior">Manage Seniors</a></li>
+          </ul>
+        </nav>
+      </div>
+      <br />
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>User ID</th>
+              <th>National Id</th>
+              {{#isAdmin}}
+              <th>Actions</th>
+              {{/isAdmin}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#seniorRequest}}
+            <tr id="{{id}}">
+              <td>{{id}}</td>
+              <td>{{status}}</td>
+              <td>{{userid}}</td>
+              <td>{{nationalid}}</td>
+              {{#isAdmin}}
+              <td>
+                <button class="btn btn-success" onclick="acceptRequest('{{id}}', 'accepted')">Accept</button>
+                <button class="btn btn-danger" onclick="rejectRequest('{{id}}', 'rejected')">Reject</button>
+              </td>
+              {{/isAdmin}}
+            </tr>
+            {{/seniorRequest}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</body>
+</html>

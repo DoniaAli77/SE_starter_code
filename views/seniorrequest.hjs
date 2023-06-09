@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SENIOR REQUEST</title>
+  <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+  <link rel="stylesheet" href="/styles/style.css" />
+  <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+  <div>
+    <div>
+      <nav class="navbar navbar-inverse" style="padding-left: 130px;">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/dashboard">Home</a></li>
+          <li><a href="/stations_example">Station</a></li>
+          <li><a href="/senior_request">Request Senior</a></li>
+          <li><a href="/rides">Rides</a></li>
+          <li><a href="/subscription">Subscription</a></li>
+          <li><a href="/refund_request">Refund Request</a></li>
+          <li><a href="/">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div id="requestResult"></div>
+
+    <form id="requestForm" class="form-horizontal">
+      <div class="form-group">
+        <label for="nationalIdInput" class="col-sm-2 control-label">National ID:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="nationalIdInput" name="nationalIdInput" placeholder="Enter National ID" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Handle form submission
+      $("#requestForm").submit(function(event) {
+        event.preventDefault(); // Prevent form from submitting normally
+
+        var nationalId = $("#nationalIdInput").val(); // Get the value of the national ID input field
+
+        // Send a POST request to the API endpoint
+        $.ajax({
+          url: "/api/v1/senior/request",
+          type: "POST",
+          data: { nationalid: nationalId }, // Adjusted property name to match the server-side code
+          success: function(response) {
+            // Handle successful response
+            $("#requestResult").text(response);
+          },
+          error: function(xhr, status, error) {
+            // Handle error response
+            $("#requestResult").text("Request failed");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

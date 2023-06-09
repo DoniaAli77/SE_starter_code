@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Refund Ticket</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <style>
+      .success-message,
+      .error-message {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      .success-message {
+        background-color: rgba(0, 128, 0, 0.2);
+        color: #008000;
+      }
+
+      .error-message {
+        background-color: rgba(255, 0, 0, 0.2);
+        color: #ff0000;
+      }
+
+      .navbar {
+        margin-bottom: 20px;
+      }
+    </style>
+    <script src="/js/jquery-2.2.0.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div class="container" style="margin-top: 20px">
+      <div class="container">
+        <h1>Refund Ticket</h1>
+
+        <div class="form-group">
+          <label for="ticketId">Enter Ticket ID:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="ticketId"
+            name="ticketId"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="requestRefund()"
+        >
+          Refund
+        </button>
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+      </div>
+
+      <script>
+        function requestRefund() {
+          const ticketIdInput = document.getElementById("ticketId");
+          const ticketId = ticketIdInput.value;
+
+          axios
+            .post(`/api/v1/refund/${ticketId}`)
+            .then((response) => {
+              const successMessage = document.getElementById("successMessage");
+              successMessage.textContent = response.data.message;
+              successMessage.style.opacity = "1";
+              setTimeout(() => {
+                successMessage.style.opacity = "0";
+              }, 3000);
+
+              ticketIdInput.value = "";
+            })
+            .catch((error) => {
+              const errorMessage = document.getElementById("errorMessage");
+              if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+              ) {
+                errorMessage.textContent = error.response.data.message;
+              } else {
+                errorMessage.textContent = "Error requesting refund";
+              }
+              errorMessage.style.opacity = "1";
+              setTimeout(() => {
+                errorMessage.style.opacity = "0";
+              }, 3000);
+            });
+        }
+      </script>
+
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-bGUbtpS1xu3/MndnLSyW2s/Qc2PvUJi3Dln6KlPBDgjqnmDU+ScLizY6vePJJh7D42fLJc0VFsGTLvOVDxrj1w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha512-a1yzz3D5wJ4hJ3P0hg1/4C7Joj+3UPOf61p9j0fl7LV3t9BN+XOlF2n8Ep79LWYXZX+scJKn5ohZJ85Up6S4Hg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+    </div>
+  </body>
+</html>
