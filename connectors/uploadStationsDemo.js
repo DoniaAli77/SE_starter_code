@@ -29,7 +29,7 @@ async function uploadSR() {
     { stationid: 6, routeid: 11 },
     { stationid: 6, routeid: 12 },
     { stationid: 7, routeid: 11 },
-    { stationid: 7, routeid: 12 }
+    { stationid: 7, routeid: 12 },
 
 
   { stationid: 8, routeid: 12 },
