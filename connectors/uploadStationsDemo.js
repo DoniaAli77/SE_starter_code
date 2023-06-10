@@ -106,7 +106,7 @@ async function uploadS() {
     {
       stationname: "s5",
       stationtype: "normal",
-      stationposition: "end",
+      stationposition: "middle",
       stationstatus: "old",
     },
     {
