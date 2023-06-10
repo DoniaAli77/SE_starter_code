@@ -124,7 +124,7 @@ async function uploadS() {
    {
       stationname: "s8",
       stationtype: "normal",
-      stationposition: "middle"
+      stationposition: "middle",
       stationstatus: "old",
     },
    {
